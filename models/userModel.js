@@ -23,7 +23,6 @@ const userSchema = new Schema({
     },
     uniqueNameCounter:{
         type:Number,
-        unique:true,
         required:true
     },
     uniqueUsername:{
@@ -102,14 +101,17 @@ userSchema.statics.signup = async function(email,password,username){
     else{
         uniqueNumber = 1
     }
-    // if(usernameExists){
-    //     throw Error('Username already in Use')
-    // }
+    
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt);
+    let paddedNum = uniqueNumber.toString().padStart(4,"0")
+    let uniqueUsername = `${username}#${paddedNum}`;
 
-    const user = await this.create({email,password:hash,username,uniqueNameCounter:uniqueNumber})
+
+    const user = await this.create({email,password:hash,username,uniqueNameCounter:uniqueNumber,uniqueUsername})
+
+    uniqueUsername = '';
 
     return user
 
