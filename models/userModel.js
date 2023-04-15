@@ -40,6 +40,18 @@ const userSchema = new Schema({
             ref:'User'
         }
     ],
+    pending:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:'User'
+        }
+    ],
+    blocked:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:'User'
+        }
+    ],
     serverList:[
         {
             type:Schema.Types.ObjectId,
