@@ -26,6 +26,11 @@ const userSchema = new Schema({
         unique:true,
         required:true
     },
+    uniqueUsername:{
+        type:String,
+        unique:true,
+        required:true
+    },
     status:{
         type:String,
         default:null
