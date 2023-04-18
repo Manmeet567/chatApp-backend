@@ -1,10 +1,12 @@
 const express = require('express')
 const requireAuth = require('../middleware/requireAuth')
-const {updateStatus} = require('../controllers/userProfileController')
+const {updateStatus, getFriends} = require('../controllers/userProfileController')
 
 const router = express.Router()
 
 router.use(requireAuth)
+
+router.post('/friends', getFriends)
 
 router.patch('/updateStatus', updateStatus)
 
