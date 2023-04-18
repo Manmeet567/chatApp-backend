@@ -5,6 +5,7 @@ const cors = require('cors');
 
 
 const userRoutes = require('./routes/users');
+const userProfileRoutes = require('./routes/userProfileRoutes');
 const serverRoutes = require('./routes/serverRoutes')
 
 
@@ -19,6 +20,7 @@ app.use(cors());
 // routes
 app.use('/api/user',userRoutes)
 app.use('/api/server', serverRoutes)
+app.use('/api/userProfile', userProfileRoutes)
 
 
 
