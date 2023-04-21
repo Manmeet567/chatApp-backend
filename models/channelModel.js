@@ -34,6 +34,7 @@ const channelSchema = new Schema({
 
 } ,{timestamps:true})
 
+
 const Channel = mongoose.model('Channel', channelSchema)
 
 module.exports = Channel

@@ -14,5 +14,4 @@ router.post('/blocked', getBlockedUsers)
 
 router.patch('/updateStatus', updateStatus)
 
-
 module.exports = router
