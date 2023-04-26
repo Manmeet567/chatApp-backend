@@ -6,8 +6,13 @@ const Message = require('./messageModel')
 const Schema = mongoose.Schema
 
 const channelSchema = new Schema({
-    name:{
+    channelId:{
         type:String,
+        required:true,
+        unique:true
+    },
+    channelType:{
+        type:String, //it could be serverType, oneToOneType, or group chat
         required:true
     },
     server:{
