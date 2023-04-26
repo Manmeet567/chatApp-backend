@@ -12,18 +12,16 @@ const channelSchema = new Schema({
         unique:true
     },
     channelType:{
-        type:String, //it could be serverType, oneToOneType, or group chat
-        required:true
-    },
-    server:{
-        type:Schema.Types.ObjectId,
-        ref:'Server',
-        required:true
-    },
-    createdBy:{
-        type:Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+        Type:{
+            type:String,
+            enum: ['single', 'server'],
+            required:true
+        },
+        serverId:{
+            type:Schema.Types.ObjectId,
+            default:null,
+            required:true
+        }
     },
     members:[
         {
