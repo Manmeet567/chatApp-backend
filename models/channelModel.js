@@ -11,18 +11,20 @@ const channelSchema = new Schema({
         required:true,
         unique:true
     },
-    channelType:{
-        Type:{
-            type:String,
-            enum: ['single', 'server'],
-            required:true
-        },
-        serverId:{
-            type:Schema.Types.ObjectId,
-            default:null,
-            required:true
+    channelType:[
+        {
+            Type:{
+                type:String,
+                enum: ['single', 'server'],
+                required:true
+            },
+            serverId:{
+                type:Schema.Types.ObjectId,
+                default:null,
+                required:true
+            }
         }
-    },
+    ],
     members:[
         {
             type:Schema.Types.ObjectId,

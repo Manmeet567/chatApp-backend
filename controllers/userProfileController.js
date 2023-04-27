@@ -74,10 +74,35 @@ const getBlockedUsers = async (req,res) => {
 }
 
 
+// send friend request
+const addFriendRequest = async (req,res) => {
+    const requestedUser = req.body.uniqueUsername;
+    console.log(requestedUser)
+
+    try{
+        const user = await User.findOne({ uniqueUsername: requestedUser });
+
+        if(!user){
+            return res.status(404).json({sent:false, message:'User not found'});
+        }
+
+        // if found
+        
+
+        res.status(200).json({sent:true,message:'Request Sent'});
+
+    } catch(error){
+        res.status(500).json({ error: 'Server Error'});
+    }
+
+    res.json({requestedUser});
+}
+
 
 module.exports = {
     updateStatus,
     getFriends,
     getPendingUsers,
-    getBlockedUsers
+    getBlockedUsers,
+    addFriendRequest
 }

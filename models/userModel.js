@@ -50,8 +50,12 @@ const userSchema = new Schema({
     ],
     pending:[
         {
-            type:Schema.Types.ObjectId,
-            ref:'User'
+            from:{
+                type:Schema.Types.ObjectId
+            },
+            to:{
+                type:Schema.Types.ObjectId
+            }
         }
     ],
     blocked:[

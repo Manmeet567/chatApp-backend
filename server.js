@@ -38,8 +38,8 @@ io.on('connection', (socket)=>{
 })
 
 
-const channelId = discord.SnowflakeUtil.generate();
-console.log(channelId);
+// const channelId = discord.SnowflakeUtil.generate();
+// console.log(channelId);
 
 
 // connecting to database
