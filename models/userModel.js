@@ -50,11 +50,18 @@ const userSchema = new Schema({
     ],
     pending:[
         {
+            _id:{
+                type: Schema.Types.ObjectId,
+                required:true,
+                unique:true
+            },
             from:{
-                type:Schema.Types.ObjectId
+                type:Schema.Types.ObjectId,
+                required:true
             },
             to:{
-                type:Schema.Types.ObjectId
+                type:Schema.Types.ObjectId,
+                required:true
             }
         }
     ],

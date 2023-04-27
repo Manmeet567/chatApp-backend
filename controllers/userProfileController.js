@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const discord = require('discord.js')
 const mongoose = require('mongoose')
 
 // update status
@@ -76,26 +77,31 @@ const getBlockedUsers = async (req,res) => {
 
 // send friend request
 const addFriendRequest = async (req,res) => {
+    const senderId = req.user._id;
     const requestedUser = req.body.uniqueUsername;
-    console.log(requestedUser)
 
-    try{
-        const user = await User.findOne({ uniqueUsername: requestedUser });
+    try {
+        const receiver = await User.findOne({ uniqueUsername: requestedUser });
 
-        if(!user){
-            return res.status(404).json({sent:false, message:'User not found'});
+        if (!receiver) {
+        return res.status(200).json({ sent: false, message: 'User does not exist.' });
         }
 
-        // if found
-        
+        const uniqueId = new mongoose.Types.ObjectId();
 
-        res.status(200).json({sent:true,message:'Request Sent'});
+        const r = await User.updateOne(
+        { _id: receiver._id },
+        { $addToSet: { pending: { _id:uniqueId, from: senderId, to: receiver._id } } }
+        );
+        const s = await User.updateOne(
+        { _id: senderId },
+        { $addToSet: { pending: { _id:uniqueId, from: senderId, to: receiver._id } } }
+        );
 
-    } catch(error){
-        res.status(500).json({ error: 'Server Error'});
+        return res.status(200).json({ sent: true, message: 'Request Sent', s });
+    } catch (error) {
+        return res.status(500).json({ error: 'Server Error' });
     }
-
-    res.json({requestedUser});
 }
 
 
