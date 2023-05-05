@@ -76,33 +76,33 @@ const getBlockedUsers = async (req,res) => {
 
 
 // send friend request
-const addFriendRequest = async (req,res) => {
-    const senderId = req.user._id;
-    const requestedUser = req.body.uniqueUsername;
+const addFriendRequest = async (req, res) => {
+  const senderId = req.user._id;
+  const requestedUser = req.body.uniqueUsername;
 
-    try {
-        const receiver = await User.findOne({ uniqueUsername: requestedUser });
+  try {
+    const receiver = await User.findOne({ uniqueUsername: requestedUser });
 
-        if (!receiver) {
-        return res.status(200).json({ sent: false, message: 'User does not exist.' });
-        }
-
-        const uniqueId = new mongoose.Types.ObjectId();
-
-        const r = await User.updateOne(
-        { _id: receiver._id },
-        { $addToSet: { pending: { _id:uniqueId, from: senderId, to: receiver._id } } }
-        );
-        const s = await User.updateOne(
-        { _id: senderId },
-        { $addToSet: { pending: { _id:uniqueId, from: senderId, to: receiver._id } } }
-        );
-
-        return res.status(200).json({ sent: true, message: requestedUser, s });
-    } catch (error) {
-        return res.status(500).json({ error: 'Server Error' });
+    if (!receiver) {
+      return res.status(200).json({ sent: false, message: 'User does not exist.' });
     }
-}
+
+    const updatedReceiver = await User.findByIdAndUpdate(
+      receiver._id,
+      { $push: { pending: { receiver: false, user_id: senderId } } }
+    );
+
+    const updatedSender = await User.findByIdAndUpdate(
+      senderId,
+      { $push: { pending: { receiver: true, user_id: receiver._id } } },
+      { new: true }
+    );
+
+    return res.status(200).json({ sent: true, sender: updatedSender.pending });
+  } catch (error) {
+    return res.status(500).json({ error: 'Server Error' });
+  }
+};
 
 
 module.exports = {

@@ -50,16 +50,11 @@ const userSchema = new Schema({
     ],
     pending:[
         {
-            _id:{
-                type: Schema.Types.ObjectId,
-                required:true,
-                unique:true
-            },
-            from:{
-                type:Schema.Types.ObjectId,
+            receiver:{
+                type:Boolean,
                 required:true
             },
-            to:{
+            user_id:{
                 type:Schema.Types.ObjectId,
                 required:true
             }
