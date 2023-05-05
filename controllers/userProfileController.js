@@ -98,7 +98,7 @@ const addFriendRequest = async (req,res) => {
         { $addToSet: { pending: { _id:uniqueId, from: senderId, to: receiver._id } } }
         );
 
-        return res.status(200).json({ sent: true, message: 'Request Sent', s });
+        return res.status(200).json({ sent: true, message: requestedUser, s });
     } catch (error) {
         return res.status(500).json({ error: 'Server Error' });
     }

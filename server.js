@@ -2,7 +2,6 @@ const express = require('express')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const cors = require('cors');
-const discord = require('discord.js')
 
 
 const userRoutes = require('./routes/users');
@@ -36,10 +35,6 @@ io.on('connection', (socket)=>{
 
    socket.emit('hello', "Heelo World");
 })
-
-
-// const channelId = discord.SnowflakeUtil.generate();
-// console.log(channelId);
 
 
 // connecting to database
