@@ -89,16 +89,16 @@ const addFriendRequest = async (req, res) => {
 
     const updatedReceiver = await User.findByIdAndUpdate(
       receiver._id,
-      { $push: { pending: { receiver: false, user_id: senderId } } }
+      { $push: { pending: { user_id: senderId } } }
     );
 
     const updatedSender = await User.findByIdAndUpdate(
       senderId,
-      { $push: { pending: { receiver: true, user_id: receiver._id } } },
+      { $push: { pending: { receiver: requestedUser, user_id: receiver._id } } },
       { new: true }
     );
 
-    return res.status(200).json({ sent: true, sender: updatedSender.pending });
+    return res.status(200).json({ sent: true, requestData: updatedSender.pending});
   } catch (error) {
     return res.status(500).json({ error: 'Server Error' });
   }

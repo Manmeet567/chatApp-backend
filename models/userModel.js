@@ -51,7 +51,8 @@ const userSchema = new Schema({
     pending:[
         {
             receiver:{
-                type:Boolean,
+                type:String,
+                default:null,
                 required:true
             },
             user_id:{
