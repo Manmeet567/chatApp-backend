@@ -52,7 +52,6 @@ const userSchema = new Schema({
         {
             receiver:{
                 type:String,
-                default:null,
                 required:true
             },
             user_id:{

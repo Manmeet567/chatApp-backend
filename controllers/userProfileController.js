@@ -89,7 +89,7 @@ const addFriendRequest = async (req, res) => {
 
     const updatedReceiver = await User.findByIdAndUpdate(
       receiver._id,
-      { $push: { pending: { user_id: senderId } } }
+      { $push: { pending: { receiver: requestedUser, user_id: senderId } } }
     );
 
     const updatedSender = await User.findByIdAndUpdate(
