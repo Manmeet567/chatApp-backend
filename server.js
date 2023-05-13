@@ -31,8 +31,9 @@ app.use('/api/userProfile', userProfileRoutes)
 
 // socket.io
 io.on('connection', (socket)=>{
-   console.log('a user connected');
-
+   const socketid = socket.id
+   console.log('User Connected : '+socketid);
+   
    socket.emit('hello', "Heelo World");
 })
 
