@@ -8,6 +8,7 @@ const { initializeSocket } = require('./socket/socket');
 const userRoutes = require('./routes/users');
 const userProfileRoutes = require('./routes/userProfileRoutes');
 const serverRoutes = require('./routes/serverRoutes')
+const socketRoutes = require('./routes/socketRoutes');
 
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cors());
 app.use('/api/user',userRoutes)
 app.use('/api/server', serverRoutes)
 app.use('/api/userProfile', userProfileRoutes)
+app.use('/api/webSocket', socketRoutes)
 
 
 // socket.io
