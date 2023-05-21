@@ -1,6 +1,6 @@
 const User = require('../models/userModel')
-const discord = require('discord.js')
-const mongoose = require('mongoose')
+// const discord = require('discord.js')
+// const mongoose = require('mongoose')
 
 // update status
 const updateStatus = async (req, res) => {
@@ -87,11 +87,19 @@ const addFriendRequest = async (req, res) => {
       return res.status(200).json({ sent: false, message: 'User does not exist.' });
     }
 
-    const updatedReceiver = await User.findByIdAndUpdate(
-      receiver._id,
-      { $push: { pending: { receiver: requestedUser, user_id: senderId } } },
-      { new: true }
-    );
+    let pendingRequests = 0;
+    if (receiver.notifications.pendingRequests) {
+      pendingRequests = receiver.notifications.pendingRequests;
+    }
+
+    const updateQuery = {
+      $push: { pending: { receiver: requestedUser, user_id: senderId } },
+      $set: { 'notifications.pendingRequests': pendingRequests + 1 }
+    };
+
+    const options = { new: true, upsert: true, setDefaultsOnInsert: true };
+
+    const updatedReceiver = await User.findByIdAndUpdate(receiver._id, updateQuery, options);
 
     const updatedSender = await User.findByIdAndUpdate(
       senderId,
@@ -99,7 +107,7 @@ const addFriendRequest = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver});
+    return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver });
   } catch (error) {
     return res.status(500).json({ error: 'Server Error' });
   }
