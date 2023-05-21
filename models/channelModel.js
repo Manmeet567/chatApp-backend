@@ -20,16 +20,22 @@ const channelSchema = new Schema({
             },
             serverId:{
                 type:Schema.Types.ObjectId,
+                ref:'Server',
                 default:null,
                 required:true
             }
         }
     ],
     members:[
-        {
-            type:Schema.Types.ObjectId,
-            ref:'User',
-            required:true
+        {   
+            userId:{
+                type:Schema.Types.ObjectId,
+                ref:'User',
+                required:true
+            },
+            socketId:{
+                type:String,
+            }
         }
     ],
     messages:[{
