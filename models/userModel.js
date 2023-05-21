@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
-const Server = require('./serverModel')
 
 const Schema = mongoose.Schema
 
@@ -29,6 +28,9 @@ const userSchema = new Schema({
         type:String,
         unique:true,
         required:true
+    },
+     socketId: {
+        type: String
     },
     status:{
         type:String,
@@ -71,7 +73,17 @@ const userSchema = new Schema({
             type:Schema.Types.ObjectId,
             ref:'Server'
         }
-    ]
+    ],
+    notifications: {
+        pendingRequests: {
+            type: Number,
+            default: 0
+        },
+        unreadMessages: {
+            type: Number,
+            default: 0
+        }
+    }
 }, {timestamps:true});
 
 
@@ -125,8 +137,6 @@ userSchema.statics.signup = async function(email,password,username){
     uniqueUsername = '';
 
     return user
-
-    //i got this code and i removed unique property from username in the schema, but i am still getting this error "E11000 duplicate key error collection: Miscord.users index: username_1 dup key: { username: "Hiro" }" can you modify this code and correct it?
 }
 
 // login User
