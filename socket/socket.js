@@ -11,7 +11,7 @@ const initializeSocket = (server) => {
     },
   });
 
-// socket authorization
+// socket authorization middleware
 io.use(async (socket, next) => {
    const token = socket.handshake.auth.token;
 
