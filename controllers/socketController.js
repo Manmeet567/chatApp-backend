@@ -2,7 +2,6 @@ const User = require('../models/userModel')
 
 const newConnection = async (req,res) => {
     const socketId = req.body.socketId;
-    console.log(socketId)
   try {
     const userId = req.user._id;
     
