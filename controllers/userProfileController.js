@@ -107,7 +107,7 @@ const addFriendRequest = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver, notifications:updatedSender.notifications });
+    return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver });
   } catch (error) {
     return res.status(500).json({ error: 'Server Error' });
   }
