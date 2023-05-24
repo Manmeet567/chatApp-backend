@@ -30,7 +30,8 @@ const userSchema = new Schema({
         required:true
     },
      socketId: {
-        type: String
+        type: String,
+        default: null
     },
     status:{
         type:String,
