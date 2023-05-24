@@ -1,6 +1,5 @@
 const User = require('../models/userModel')
-// const discord = require('discord.js')
-// const mongoose = require('mongoose')
+const { io } = require('../socket/socket')
 
 // update status
 const updateStatus = async (req, res) => {
@@ -96,7 +95,7 @@ const addFriendRequest = async (req, res) => {
       $push: { pending: { receiver: requestedUser, user_id: senderId } },
       $set: { 'notifications.pendingRequests': pendingRequests + 1 }
     };
-
+    
     const options = { new: true, upsert: true, setDefaultsOnInsert: true };
 
     const updatedReceiver = await User.findByIdAndUpdate(receiver._id, updateQuery, options);
@@ -107,8 +106,15 @@ const addFriendRequest = async (req, res) => {
       { new: true }
     );
 
+    if(updatedReceiver.socketId){
+        const notification = updatedReceiver.notifications
+        console.log(notification)
+        req.app.get('io').to(updatedReceiver.socketId).emit('incomingFriendRequest', notification);
+    }
+
     return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: 'Server Error' });
   }
 };
