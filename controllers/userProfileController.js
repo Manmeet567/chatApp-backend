@@ -1,5 +1,5 @@
 const User = require('../models/userModel')
-const { io } = require('../socket/socket')
+const { io } = require('socket.io')
 
 // update status
 const updateStatus = async (req, res) => {
@@ -106,11 +106,6 @@ const addFriendRequest = async (req, res) => {
       { new: true }
     );
 
-    if(updatedReceiver.socketId){
-        const notification = updatedReceiver.notifications
-        console.log(notification)
-        req.app.get('io').to(updatedReceiver.socketId).emit('incomingFriendRequest', notification);
-    }
 
     return res.status(200).json({ sent: true, requestData: updatedSender.pending, newFriend: updatedReceiver });
   } catch (error) {
