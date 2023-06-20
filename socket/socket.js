@@ -11,7 +11,6 @@ const initializeSocket = (server) => {
     },
   });
 
-// socket authorization middleware
 io.use(async (socket, next) => {
    const token = socket.handshake.auth.token;
 
@@ -27,7 +26,6 @@ io.use(async (socket, next) => {
       return next(new Error('User not found'));
     }
 
-    // Attach the user object to the socket for future reference
     socket.user = user;
 
     next();
@@ -38,13 +36,27 @@ io.use(async (socket, next) => {
 });
 
 
-// socket connection handler
 io.on('connection', (socket) => {
   console.log('Client Connected : ',socket.id);
 
-    // Handle client disconnect
-    socket.on('disconnect', () => {
+  socket.on('friendRequestNotification', (data) => {
+    if(data.receiver.socketId){
+      io.to(data.receiver.socketId).emit("newFriendRequest", data, {once:true})
+    }
+  })
+
+    socket.on('disconnect',async () => {
       console.log('Client Disconnected : ', socket.id);
+      if (socket.user) {
+        const userId = socket.user._id;
+
+        try {
+          await User.findByIdAndUpdate(userId, { socketId: null });
+          console.log('SocketId updated to null in database');
+        } catch (error) {
+          console.log('Error updating socketId in database:', error);
+        }
+      }
     });
   });
 };
