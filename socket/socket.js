@@ -52,6 +52,7 @@ io.on('connection', (socket) => {
 
         try {
           await User.findByIdAndUpdate(userId, { socketId: null });
+          await User.findByIdAndUpdate(userId, { status: "invisible"});
           console.log('SocketId updated to null in database');
         } catch (error) {
           console.log('Error updating socketId in database:', error);
